@@ -16,6 +16,7 @@ public class UserController {
     public User saveUser(@RequestBody User user) {
         return this.userService.saveUser(user);
     }
+
     @GetMapping(value = "{name}")
     public User getUserByName(@PathVariable String name) throws UserNotFoundException {
         return this.userService.getUserByName(name);

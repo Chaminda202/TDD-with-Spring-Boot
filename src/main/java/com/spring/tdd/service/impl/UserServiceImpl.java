@@ -5,6 +5,7 @@ import com.spring.tdd.exception.UserNotFoundException;
 import com.spring.tdd.repository.UserRepository;
 import com.spring.tdd.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
+
+    @Cacheable(cacheNames = "users", key = "#name")
     @Override
     @Transactional
     public User getUserByName(String name) throws UserNotFoundException {
