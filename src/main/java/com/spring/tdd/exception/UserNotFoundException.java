@@ -1,5 +1,6 @@
 package com.spring.tdd.exception;
-// @ResponseStatus(value = HttpStatus.NOT_FOUND) without adding global exception handler
+
+// @ResponseStatus(value = HttpStatus.NOT_FOUND) //  without adding global exception handler
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException() {
         super();

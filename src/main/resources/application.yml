@@ -4,6 +4,9 @@ server:
 spring:
   application:
     name: spring-security
+  devtools:
+    restart:
+      enabled: true
 
   datasource:
     driverClassName: org.mariadb.jdbc.Driver
@@ -18,3 +21,5 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+  main:
+    allow-bean-definition-overriding: true

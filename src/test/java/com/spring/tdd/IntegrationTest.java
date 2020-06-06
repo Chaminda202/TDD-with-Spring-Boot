@@ -1,5 +1,6 @@
 package com.spring.tdd;
 
+/*
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -65,3 +66,4 @@ public class IntegrationTest {
         assertThat(responseEntity.getBody().getOccupation()).isEqualTo("Developer");
     }
 }
+*/

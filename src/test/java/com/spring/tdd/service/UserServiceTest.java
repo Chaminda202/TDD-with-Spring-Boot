@@ -2,10 +2,13 @@ package com.spring.tdd.service;
 
 import com.spring.tdd.entity.User;
 import com.spring.tdd.exception.UserNotFoundException;
+import com.spring.tdd.mapper.UserMapper;
+import com.spring.tdd.model.UserDTO;
 import com.spring.tdd.repository.UserRepository;
 import com.spring.tdd.service.impl.UserServiceImpl;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +18,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
@@ -24,15 +29,17 @@ import static org.mockito.BDDMockito.given;
 public class UserServiceTest {
     @MockBean
     private UserRepository userRepository;
-
+    @MockBean
+    private UserMapper userMapper;
     private UserService userService;
 
-    @BeforeAll
+    @BeforeEach
     public void setUp() {
-        this.userService = new UserServiceImpl(this.userRepository);
+        this.userService = new UserServiceImpl(this.userRepository, this.userMapper);
     }
 
     @Test
+    @Order(1)
     public void getUserByName_shouldReturnUser() {
         given(this.userRepository
                 .findByUsername(anyString()))
@@ -44,27 +51,26 @@ public class UserServiceTest {
                         .build()));
 
         //act
-        User user = this.userService.getUserByName("Tom");
+        UserDTO user = this.userService.getUserByName("Tom");
 
         Assertions.assertThat(user.getUsername()).isEqualTo("Tom");
         Assertions.assertThat(user.getOccupation()).isEqualTo("Developer");
 
     }
 
-    @Test()
+    //@Test
+    //@Order(2)
     public void getUserByName_notFoundUser() throws Exception {
-        given(this.userRepository
+        /*given(this.userRepository
                 .findByUsername(anyString()))
-                .willThrow(new UserNotFoundException("User not exist"));
+                .willThrow(new UserNotFoundException("User is not exist Tom1"));
 
         Assertions.assertThatThrownBy(() -> {
-            this.userService.getUserByName("Tom");
-        }).isInstanceOf(UserNotFoundException.class)
-               .hasMessage("User not exist");
-
-        /*Throwable thrown = Assertions.catchThrowable(() -> {
-            this.userService.getUserByName("Tom");
-        });
-        Assertions.assertThat(thrown).isNotNull().isInstanceOf(UserNotFoundException.class);*/
+            this.userService.getUserByName("Tom1");
+        }).isInstanceOf(UserNotFoundException.class);
+               // .hasMessage("User is not exist Tom1");
+*/
+        Throwable exception = assertThrows(UserNotFoundException.class, () -> this.userService.getUserByName("Tom1"));
+        assertEquals(exception.getMessage(), "User is not exist Tom1");
     }
 }
