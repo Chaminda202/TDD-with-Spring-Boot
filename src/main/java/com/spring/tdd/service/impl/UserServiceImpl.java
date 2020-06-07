@@ -9,6 +9,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service("userService")
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -28,5 +31,14 @@ public class UserServiceImpl implements UserService {
     public UserDTO saveUser(UserDTO userDTO) {
         return this.userMapper
                 .mapUserToUserDto(this.userRepository.save(this.userMapper.mapUserDtoToUserEntity(userDTO)));
+    }
+
+    @Override
+    public List<UserDTO> getUsersByAge(Integer age) throws UserNotFoundException {
+        return this.userRepository
+                .findByAge(age)
+                .stream()
+                .map(this.userMapper::mapUserToUserDto)
+                .collect(Collectors.toList());
     }
 }

@@ -1,6 +1,5 @@
 package com.spring.tdd;
 
-/*
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -16,6 +15,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.spring.tdd.entity.User;
 
+import java.time.LocalDate;
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -30,6 +31,7 @@ public class IntegrationTest {
                 .username("Tom")
                 .age(25)
                 .occupation("Developer")
+                .birthday(LocalDate.of(1995, 1, 24))
                 .build();
         //act
         HttpHeaders headers = new HttpHeaders();
@@ -66,4 +68,3 @@ public class IntegrationTest {
         assertThat(responseEntity.getBody().getOccupation()).isEqualTo("Developer");
     }
 }
-*/

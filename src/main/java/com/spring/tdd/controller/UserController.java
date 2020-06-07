@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "users")
@@ -21,5 +22,10 @@ public class UserController {
     @GetMapping(value = "{name}")
     public UserDTO getUserByName(@PathVariable String name) throws UserNotFoundException {
         return this.userService.getUserByName(name);
+    }
+
+    @GetMapping(value = "/age/{age}")
+    public List<UserDTO> getUsersByAge(@PathVariable Integer age) {
+        return this.userService.getUsersByAge(age);
     }
 }

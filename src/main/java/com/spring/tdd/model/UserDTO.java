@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
@@ -20,7 +21,7 @@ public class UserDTO {
     @NotNull
     @Name
     private String username;
-    @NotNull
+    @Min(value = 18, message = "{min.validation.msg}")
     private Integer age;
     private String occupation;
     @NotNull

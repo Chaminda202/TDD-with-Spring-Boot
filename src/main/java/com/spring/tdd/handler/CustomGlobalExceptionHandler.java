@@ -10,6 +10,7 @@ import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.Arrays;
@@ -49,9 +50,9 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
         CustomErrorResponse errorResponse = CustomErrorResponse.builder()
                 .details(errors)
-                .statusCode(HttpStatus.NOT_FOUND.value())
+                .statusCode(HttpStatus.BAD_REQUEST.value())
                 .build();
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @Override
@@ -59,5 +60,14 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
             MissingPathVariableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         System.out.println("Error message " + ex.getMessage());
         return handleExceptionInternal(ex, null, headers, status, request);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<Object> methodArgumentTypeMismatchException(Exception ex, WebRequest request) {
+        CustomErrorResponse errorResponse = CustomErrorResponse.builder()
+                .details(Arrays.asList(ex.getMessage()))
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 }
