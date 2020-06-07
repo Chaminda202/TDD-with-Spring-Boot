@@ -23,3 +23,6 @@ spring:
         format_sql: true
   main:
     allow-bean-definition-overriding: true
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true

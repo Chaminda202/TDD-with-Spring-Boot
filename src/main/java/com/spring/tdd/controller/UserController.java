@@ -3,10 +3,13 @@ package com.spring.tdd.controller;
 import com.spring.tdd.exception.UserNotFoundException;
 import com.spring.tdd.model.UserDTO;
 import com.spring.tdd.service.UserService;
+import com.spring.tdd.validator.Name;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController

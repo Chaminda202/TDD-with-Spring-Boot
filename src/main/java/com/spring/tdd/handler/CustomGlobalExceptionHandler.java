@@ -5,6 +5,7 @@ import com.spring.tdd.exception.UserNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -43,10 +44,10 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                 .collect(Collectors.toList());
          */
         //Get all errors
-        List<String> errors =  ex.getBindingResult().getAllErrors()
-                        .stream()
-                        .map(item -> item.getDefaultMessage())
-                        .collect(Collectors.toList());
+        List<String> errors = ex.getBindingResult().getAllErrors()
+                .stream()
+                .map(item -> item.getDefaultMessage())
+                .collect(Collectors.toList());
 
         CustomErrorResponse errorResponse = CustomErrorResponse.builder()
                 .details(errors)
@@ -69,5 +70,19 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .build();
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Handle unprocessable json data exception
+     * Handel undefine attributes in json payload
+     */
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(
+            HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        CustomErrorResponse errorResponse = CustomErrorResponse.builder()
+                .details(Arrays.asList(ex.getMessage()))
+                .statusCode(HttpStatus.UNPROCESSABLE_ENTITY.value())
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 }
