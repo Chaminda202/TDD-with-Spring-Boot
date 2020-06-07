@@ -27,11 +27,13 @@ public class UserServiceMockitoTest {
     private UserRepository userRepository;
     @Autowired
     private UserMapper userMapper;
+    @Mock
+    private UserBusinessValidation userBusinessValidation;
     private UserService userService;
 
     @BeforeEach
     public void setUp() {
-        this.userService = new UserServiceImpl(this.userRepository, this.userMapper);
+        this.userService = new UserServiceImpl(this.userRepository, this.userMapper, this.userBusinessValidation);
     }
 
     @Test()

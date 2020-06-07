@@ -46,7 +46,7 @@ public class UserRepositoryTest {
                 .build());
         Optional<User> optionalUser = this.userRepository.findByUsername("Tim");
 
-        org.assertj.core.api.Assertions.assertThat(saveUser.getUsername()).isEqualTo(optionalUser.get().getUsername());
+        Assertions.assertThat(saveUser.getUsername()).isEqualTo(optionalUser.get().getUsername());
         Assertions.assertThat(saveUser.getOccupation()).isEqualTo(optionalUser.get().getOccupation());
     }
 }

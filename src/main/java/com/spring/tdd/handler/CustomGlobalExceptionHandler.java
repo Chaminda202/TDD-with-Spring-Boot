@@ -1,6 +1,7 @@
 package com.spring.tdd.handler;
 
 import com.spring.tdd.common.CustomErrorResponse;
+import com.spring.tdd.exception.BusinessValidationException;
 import com.spring.tdd.exception.UserNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -82,6 +83,15 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         CustomErrorResponse errorResponse = CustomErrorResponse.builder()
                 .details(Arrays.asList(ex.getMessage()))
                 .statusCode(HttpStatus.UNPROCESSABLE_ENTITY.value())
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler(BusinessValidationException.class)
+    public ResponseEntity<Object> businessValidationException(BusinessValidationException ex, WebRequest request) {
+        CustomErrorResponse errorResponse = CustomErrorResponse.builder()
+                .details(Arrays.asList(ex.getMessage()))
+                .statusCode(ex.getErrorCode() != null ? Integer.valueOf(ex.getErrorCode()) : HttpStatus.UNPROCESSABLE_ENTITY.value())
                 .build();
         return new ResponseEntity<>(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
     }
