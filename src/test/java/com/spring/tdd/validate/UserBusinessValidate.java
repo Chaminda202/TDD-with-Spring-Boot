@@ -51,7 +51,7 @@ public class UserBusinessValidate {
                 .build();
 
         Throwable exception = assertThrows(BusinessValidationException.class, () -> this.userBusinessValidation.businessCriteria(user));
-        assertEquals(exception.getMessage(), "User's occupation does not in the current list");;
+        assertEquals(exception.getMessage(), "User's occupation does not in the current list");
     }
 
     @Test

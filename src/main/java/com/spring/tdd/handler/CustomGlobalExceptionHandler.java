@@ -57,13 +57,6 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @Override
-    protected ResponseEntity<Object> handleMissingPathVariable(
-            MissingPathVariableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        System.out.println("Error message " + ex.getMessage());
-        return handleExceptionInternal(ex, null, headers, status, request);
-    }
-
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Object> methodArgumentTypeMismatchException(Exception ex, WebRequest request) {
         CustomErrorResponse errorResponse = CustomErrorResponse.builder()
@@ -91,7 +84,8 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     public ResponseEntity<Object> businessValidationException(BusinessValidationException ex, WebRequest request) {
         CustomErrorResponse errorResponse = CustomErrorResponse.builder()
                 .details(Arrays.asList(ex.getMessage()))
-                .statusCode(ex.getErrorCode() != null ? Integer.valueOf(ex.getErrorCode()) : HttpStatus.UNPROCESSABLE_ENTITY.value())
+                .statusCode(HttpStatus.UNPROCESSABLE_ENTITY.value())
+                .errorCode(ex.getErrorCode())
                 .build();
         return new ResponseEntity<>(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
     }

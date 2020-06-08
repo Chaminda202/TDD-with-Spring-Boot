@@ -1,0 +1,5 @@
+mvn clean install
+mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=admin
+
+mvn clean test
+mvn sonar:sonar -Dsonar.jacoco.reportPaths=target/jacoco.exec -Dsonar.projectName="tdd-demo" -Dsonar.projectKey="tdd-project" -Dsonar.host.url=http://localhost:9000 -Dsonar.login=79d2338df3698a3765856979d11a2d35fe68cb1d

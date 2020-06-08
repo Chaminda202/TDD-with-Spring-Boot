@@ -17,6 +17,12 @@
 	<properties>
 		<java.version>8</java.version>
 		<junit.jupiter.version>5.4.0</junit.jupiter.version>
+		<jacoco.version>0.8.4</jacoco.version>
+		<sonar.version>3.6.0.1398</sonar.version>
+		<sonar.exclusions>
+			**/SpringBootDockerExampleApplication.java,
+			**/config/*.java
+		</sonar.exclusions>
 	</properties>
 
 	<dependencies>
@@ -87,10 +93,39 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>${sonar.version}</version>
+			</plugin>
+			<!-- JaCoCo configuration -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco.version}</version>
+				<executions>
+					<execution>
+						<id>default-prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>default-report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+						<!-- default target/jscoco/site/* update the default JaCoCo output folder -->
+						<configuration>
+							<outputDirectory>target/jacoco-report</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

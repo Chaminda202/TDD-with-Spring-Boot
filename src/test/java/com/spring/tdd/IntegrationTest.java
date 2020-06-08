@@ -1,5 +1,6 @@
 package com.spring.tdd;
 
+import com.spring.tdd.model.UserDTO;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -24,25 +25,25 @@ public class IntegrationTest {
     @Autowired
     private TestRestTemplate testRestTemplate;
 
-    @Test()
+    @Test
     @Order(1)
     public void saveUser_shouldReturnUser() {
-        User user = User.builder()
+        UserDTO user = UserDTO.builder()
                 .username("Tom")
-                .age(25)
-                .occupation("Developer")
-                .birthday(LocalDate.of(1995, 1, 24))
+                .age(40)
+                .occupation("Manager")
+                .birthday(LocalDate.of(1980, 1, 24))
                 .build();
         //act
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<User> entity = new HttpEntity<>(user, headers);
+        HttpEntity<UserDTO> entity = new HttpEntity<>(user, headers);
 
-        ResponseEntity<User> responseEntity = testRestTemplate.exchange(
+        ResponseEntity<UserDTO> responseEntity = testRestTemplate.exchange(
                 "/users",
                 HttpMethod.POST,
                 entity,
-                User.class);
+                UserDTO.class);
 
         //assert
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -55,16 +56,16 @@ public class IntegrationTest {
     public void getUserByName_shouldReturnUser () {
 
         //act
-        ResponseEntity<User> responseEntity = testRestTemplate.exchange(
+        ResponseEntity<UserDTO> responseEntity = testRestTemplate.exchange(
                 "/users/{name}",
                 HttpMethod.GET,
                 null,
-                User.class,
+                UserDTO.class,
                 "Tom");
 
         //assert
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody().getUsername()).isEqualTo("Tom");
-        assertThat(responseEntity.getBody().getOccupation()).isEqualTo("Developer");
+        assertThat(responseEntity.getBody().getOccupation()).isEqualTo("Manager");
     }
 }

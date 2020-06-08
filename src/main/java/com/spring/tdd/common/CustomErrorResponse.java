@@ -9,4 +9,5 @@ import java.util.List;
 public class CustomErrorResponse {
     private List<String> details;
     private int statusCode;
+    private String errorCode;
 }
